@@ -1,75 +1,108 @@
-// funkcija za simulaciju pretraživanja muzičkih zajednica (dinamički prikaz)
+// funkcija za pretraživanje i prikaz linkova na stvarne rasprave/stranice
 function pretraziZajednice() {
     const query = document.getElementById('searchQuery').value.trim();
     const platform = document.getElementById('platformSelect').value;
     const resultsDiv = document.getElementById('searchResults');
-    
+
     if (!query && platform === 'sve') {
-        resultsDiv.innerHTML = `<div class="mock-result">🔎 Unesite naziv izvođača, žanr ili zajednicu (npr. "metal", "kpop", "Billie Eilish") da vidite primjere diskusija.</div>`;
+        resultsDiv.innerHTML = `<div class="mock-result">🔎 Unesite naziv izvođača, žanr ili zajednicu da vidite linkove na relevantne rasprave.</div>`;
         return;
     }
-    
-    let displayText = '';
-    const searchTerm = query === '' ? 'popularni izvođač' : query;
-    
-    // podaci simulirani za razlicite platforme
-    const redditResults = [
-        `r/Music: "Što mislite o novom albumu ${searchTerm}?" - 234 komentara`,
-        `r/${searchTerm.replace(/\s/g,'')} : Fanovi raspravljaju o turneji`,
-        `Trending: najbolje pjesme ${searchTerm} u 2025.`
-    ];
-    
-    const twitterResults = [
-        `🔥 #${searchTerm.replace(/\s/g,'')} trending s 45k tweetova`,
-        `Fan account: "Upravo slušam ${searchTerm} – remek djelo"`,
-        `Anketa: Najbolji album godine → ${searchTerm} vodi`
-    ];
-    
-    const facebookResults = [
-        `Grupa "Ljubitelji ${searchTerm}" - 12.3k članova`,
-        `Događanje: Slušanje albuma uživo (FB live)`,
-        `Post: "Preporučite pjesme slične ${searchTerm}"`
-    ];
-    
-    const discordResults = [
-        `Discord server "${searchTerm} Community" - 3400 online`,
-        `#general: listening party za novi singl`,
-        `Kanal #fan-art posvećen ${searchTerm}`
-    ];
-    
-    const tiktokResults = [
-        `#${searchTerm}Challenge - 2M pregleda`,
-        `Video eseji o utjecaju ${searchTerm} na žanr`
-    ];
-    
-    if (platform === 'sve' || platform === 'Reddit') {
-        displayText += `<div class="mock-result"><strong>🔴 Reddit zajednice:</strong><br> - ${redditResults.join('<br> - ')}</div>`;
-    }
-    if (platform === 'sve' || platform === 'X (Twitter)') {
-        displayText += `<div class="mock-result"><strong>🐦 X (Twitter) rasprave:</strong><br> - ${twitterResults.join('<br> - ')}</div>`;
-    }
-    if (platform === 'sve' || platform === 'Facebook') {
-        displayText += `<div class="mock-result"><strong>📘 Facebook grupe:</strong><br> - ${facebookResults.join('<br> - ')}</div>`;
-    }
-    if (platform === 'sve' || platform === 'Discord') {
-        displayText += `<div class="mock-result"><strong>💬 Discord serveri:</strong><br> - ${discordResults.join('<br> - ')}</div>`;
-    }
-    if (platform === 'TikTok') {
-        displayText += `<div class="mock-result"><strong>📱 TikTok muzički fandomovi:</strong><br> - ${tiktokResults.join('<br> - ')}</div>`;
-    } else if (platform === 'sve') {
-        displayText += `<div class="mock-result"><strong>📱 TikTok (dodatno):</strong><br> - ${tiktokResults.join('<br> - ')}</div>`;
-    }
-    
-    if (!displayText) {
-        displayText = `<div class="mock-result">⚠️ Nema rezultata za platformu "${platform}", pokušajte s "sve" ili drugom opcijom.</div>`;
-    }
-    
-    resultsDiv.innerHTML = displayText;
-}
 
-// jednostavna funkcija za demo button-e na karticama
-function showMockResult(platformName) {
-    const resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = `<div class="mock-result">🎵 Prikaz primjera sa platforme ${platformName}: U posljednjih sat vremena fanovi raspravljaju o novim singlovima, remixevima i najavama turneja. Zajednica je vrlo aktivna!</div>`;
-    document.getElementById('searchQuery').focus();
+    let displayHTML = '';
+    const searchTerm = query === '' ? 'music' : encodeURIComponent(query);
+    const displayTerm = query === '' ? 'popularni izvođač' : query;
+
+    // Generiranje linkova za Reddit
+    if (platform === 'sve' || platform === 'Reddit') {
+        displayHTML += `<div class="platform-header">🔴 Reddit zajednice i rasprave</div>`;
+        displayHTML += `<a href="https://www.reddit.com/r/Music/search/?q=${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🎵 r/Music - Pretraga: ${displayTerm}</span>
+                            <span class="link-url">reddit.com/r/Music/search/?q=${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.reddit.com/r/indieheads/search/?q=${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🎸 r/indieheads - Rasprave o ${displayTerm}</span>
+                            <span class="link-url">reddit.com/r/indieheads/search/?q=${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.reddit.com/r/hiphopheads/search/?q=${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🎤 r/hiphopheads - ${displayTerm} diskusije</span>
+                            <span class="link-url">reddit.com/r/hiphopheads/search/?q=${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.reddit.com/r/kpop/search/?q=${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🇰🇷 r/kpop - ${displayTerm} zajednica</span>
+                            <span class="link-url">reddit.com/r/kpop/search/?q=${searchTerm}</span>
+                        </a>`;
+    }
+
+    // Generiranje linkova za X (Twitter)
+    if (platform === 'sve' || platform === 'X (Twitter)') {
+        displayHTML += `<div class="platform-header">🐦 X (Twitter) - Trending rasprave</div>`;
+        displayHTML += `<a href="https://twitter.com/search?q=${searchTerm}%20music&f=live" target="_blank" class="result-link">
+                            <span class="link-title">🔥 #${displayTerm} - Najnoviji tweetovi</span>
+                            <span class="link-url">twitter.com/search?q=${searchTerm}%20music</span>
+                        </a>`;
+        displayHTML += `<a href="https://twitter.com/search?q=%23NowPlaying%20${searchTerm}&f=live" target="_blank" class="result-link">
+                            <span class="link-title">🎧 #NowPlaying - Što ljudi slušaju?</span>
+                            <span class="link-url">twitter.com/search?q=%23NowPlaying%20${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://twitter.com/search?q=${searchTerm}%20fan&f=live" target="_blank" class="result-link">
+                            <span class="link-title">💬 Fan tweetovi o ${displayTerm}</span>
+                            <span class="link-url">twitter.com/search?q=${searchTerm}%20fan</span>
+                        </a>`;
+    }
+
+    // Generiranje linkova za Facebook
+    if (platform === 'sve' || platform === 'Facebook') {
+        displayHTML += `<div class="platform-header">📘 Facebook grupe i stranice</div>`;
+        displayHTML += `<a href="https://www.facebook.com/search/top?q=${searchTerm}%20music%20fans" target="_blank" class="result-link">
+                            <span class="link-title">👥 Grupe obožavatelja - ${displayTerm}</span>
+                            <span class="link-url">facebook.com/search/top?q=${searchTerm}%20music%20fans</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.facebook.com/search/events?q=${searchTerm}%20concert" target="_blank" class="result-link">
+                            <span class="link-title">🎤 Događaji i koncerti - ${displayTerm}</span>
+                            <span class="link-url">facebook.com/search/events?q=${searchTerm}%20concert</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.facebook.com/search/groups/?q=${searchTerm}%20fan%20club" target="_blank" class="result-link">
+                            <span class="link-title">🎸 Fan klubovi - ${displayTerm}</span>
+                            <span class="link-url">facebook.com/search/groups/?q=${searchTerm}%20fan%20club</span>
+                        </a>`;
+    }
+
+    // Generiranje linkova za Discord
+    if (platform === 'sve' || platform === 'Discord') {
+        displayHTML += `<div class="platform-header">💬 Discord serveri (disboard.org pretraga)</div>`;
+        displayHTML += `<a href="https://disboard.org/servers/tag/${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🎵 Discord serveri s tagom #${displayTerm}</span>
+                            <span class="link-url">disboard.org/servers/tag/${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://top.gg/servers/search?q=${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">🎧 Top.gg - ${displayTerm} community serveri</span>
+                            <span class="link-url">top.gg/servers/search?q=${searchTerm}</span>
+                        </a>`;
+    }
+
+    // Generiranje linkova za TikTok
+    if (platform === 'TikTok') {
+        displayHTML += `<div class="platform-header">📱 TikTok - Muzički fandomovi</div>`;
+        displayHTML += `<a href="https://www.tiktok.com/tag/${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">#${displayTerm} - Trendovi i challengeovi</span>
+                            <span class="link-url">tiktok.com/tag/${searchTerm}</span>
+                        </a>`;
+        displayHTML += `<a href="https://www.tiktok.com/search?q=${searchTerm}%20music" target="_blank" class="result-link">
+                            <span class="link-title">🎬 Video preporuke za ${displayTerm}</span>
+                            <span class="link-url">tiktok.com/search?q=${searchTerm}%20music</span>
+                        </a>`;
+    } else if (platform === 'sve') {
+        displayHTML += `<div class="platform-header">📱 TikTok (dodatno)</div>`;
+        displayHTML += `<a href="https://www.tiktok.com/tag/${searchTerm}" target="_blank" class="result-link">
+                            <span class="link-title">#${displayTerm} - TikTok zajednica</span>
+                            <span class="link-url">tiktok.com/tag/${searchTerm}</span>
+                        </a>`;
+    }
+
+    if (!displayHTML) {
+        displayHTML = `<div class="mock-result">⚠️ Nema rezultata za platformu "${platform}". Pokušajte odabrati "Sve platforme" ili drugu opciju.</div>`;
+    }
+
+    resultsDiv.innerHTML = displayHTML;
 }
