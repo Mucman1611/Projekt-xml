@@ -3,54 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MusicHive · Pronađi muzičku zajednicu</title>
+    <title>FanScout | Praćenje muzičkih zajednica</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
+<header class="header">
     <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-head-side-vr"></i>
-                <h1>Music<span>Hive</span></h1>
-            </div>
-            <p class="tagline">Pronađite svoju muzičku zajednicu — bendove, forume, produkcijske grupe, škole, diskografske kuće</p>
-        </header>
-
-        <!-- Search sekcija -->
-        <div class="search-card">
-            <div class="search-wrapper">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="searchInput" placeholder="Npr. jazz, rock, produkcija, metal, bubnjevi, DJ set..." autocomplete="off">
-                <button id="searchBtn"><i class="fas fa-arrow-right"></i> Pretraži</button>
-            </div>
-            <div class="filter-hint">
-                <span><i class="fas fa-lightbulb"></i> Probaj: "rock", "elektronika", "produkcija", "džez", "folk", "DIY"</span>
-            </div>
+        <h1>🎧 FanScout</h1>
+        <div class="subhead">Pretraživanje muzičkih zajednica i fandomova · Reddit · X (Twitter) · Facebook · Discord · TikTok</div>
+        <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <span class="badge">#kpop fandom</span>
+            <span class="badge">#metalcommunity</span>
+            <span class="badge">#indieheads</span>
+            <span class="badge">#hiphopheads</span>
         </div>
-
-        <!-- Statistika / info bar -->
-        <div class="stats-bar" id="statsBar">
-            <span><i class="fas fa-music"></i> <span id="totalCommunities">0</span> zajednica u bazi</span>
-            <span><i class="fas fa-chart-line"></i> <span id="resultCount">0</span> rezultata za trenutnu pretragu</span>
-        </div>
-
-        <!-- Grid sa zajednicama (dinamički) -->
-        <div class="communities-grid" id="communitiesGrid">
-            <!-- JS će renderirati kartice -->
-            <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i> Učitavanje baze zajednica...</div>
-        </div>
-
-        <!-- Footer sa jednostavnim informacijama -->
-        <footer>
-            <p><i class="far fa-copyright"></i> MusicHive — platforma za povezivanje muzičkih entuzijasta</p>
-            <p class="small">Pretražuje po imenu, opisu, žanru, lokaciji, tipu zajednice.</p>
-        </footer>
     </div>
+</header>
 
-    <!-- JavaScript (odvojen) -->
-    <script src="script.js"></script>
+<main>
+    <div class="container" id="pretraga">
+        <div class="section">
+            <h2 class="section-title">🔎 Pretraži muzičke zajednice</h2>
+            <div class="search-zone">
+                <div class="search-box">
+                    <div class="input-group">
+                        <label>🎤 Ime izvođača / žanr / zajednica</label>
+                        <input type="text" id="searchQuery" placeholder="npr. Taylor Swift, metalcore, BTS, jazz, indie ...">
+                    </div>
+                    <div class="input-group">
+                        <label>📱 Platforma</label>
+                        <select id="platformSelect">
+                            <option value="sve">Sve platforme</option>
+                            <option value="Reddit">Reddit</option>
+                            <option value="X (Twitter)">X (Twitter)</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Discord">Discord</option>
+                            <option value="TikTok">TikTok</option>
+                        </select>
+                    </div>
+                    <button class="search-btn" onclick="pretraziZajednice()">Pretraži</button>
+                </div>
+                <div id="searchResults" class="results-area">
+                    <div class="mock-result">✨ Unesite pojam i odaberite platformu za prikaz linkova na relevantne rasprave i stranice.</div>
+                </div>
+            </div>
+            <p style="font-size:0.85rem; margin-top:12px; color:#4b3f72;">* Rezultati prikazuju stvarne linkove na rasprave s odabranih platformi.</p>
+        </div>
+    </div>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
